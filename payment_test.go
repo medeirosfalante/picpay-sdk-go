@@ -9,7 +9,7 @@ import (
 	"github.com/rafaeltokyo/picpay-sdk-go"
 )
 
-func TestCreatePayment(t *testing.T) {
+func TestPaymentCreate(t *testing.T) {
 	godotenv.Load()
 	client := picpay.New(os.Getenv("PICPAY_TOKEN"), os.Getenv("ENV"))
 	response, errAPI, err := client.Payment().Create(&picpay.PaymentRequest{
@@ -38,4 +38,53 @@ func TestCreatePayment(t *testing.T) {
 		t.Error("response is null")
 		return
 	}
+	t.Errorf("ref %v", response)
+}
+
+func TestPaymentGetStatusCreated(t *testing.T) {
+	godotenv.Load()
+	client := picpay.New(os.Getenv("PICPAY_TOKEN"), os.Getenv("ENV"))
+	ReferenceID := os.Getenv("REFERENCEID_CREATED")
+	responseStatus, errAPI, err := client.Payment().Status(ReferenceID)
+	if err != nil {
+		t.Errorf("err : %#v", err)
+		return
+	}
+	if errAPI != nil {
+		t.Errorf("errAPI : %#v", errAPI)
+		return
+	}
+	if responseStatus == nil {
+		t.Error("responseStatus is null")
+		return
+	}
+	if responseStatus.Status != "created" {
+		t.Error("status is invalid")
+
+	}
+
+}
+
+func TestPaymentGetStatusPaid(t *testing.T) {
+	godotenv.Load()
+	client := picpay.New(os.Getenv("PICPAY_TOKEN"), os.Getenv("ENV"))
+	ReferenceID := os.Getenv("REFERENCEID_PAID")
+	responseStatus, errAPI, err := client.Payment().Status(ReferenceID)
+	if err != nil {
+		t.Errorf("err : %#v", err)
+		return
+	}
+	if errAPI != nil {
+		t.Errorf("errAPI : %#v", errAPI)
+		return
+	}
+	if responseStatus == nil {
+		t.Error("responseStatus is null")
+		return
+	}
+	if responseStatus.Status != "paid" {
+		t.Error("status is invalid")
+
+	}
+
 }
