@@ -1,5 +1,7 @@
 package picpay
 
+import "fmt"
+
 //PaymentBuyer - refer for struct Master for Payment
 
 type Payment struct {
@@ -33,6 +35,13 @@ type PaymentResponse struct {
 	QrCode      *PaymentQrCode `json:"qrcode"`
 }
 
+//PaymentStatusResponse - refer for status payment
+type PaymentStatusResponse struct {
+	AuthorizationID string `json:"authorizationId"`
+	ReferenceID     string `json:"referenceId"`
+	Status          string `json:"status"`
+}
+
 //PaymentQrCode - Qrcode for payment
 type PaymentQrCode struct {
 	Content string `json:"content"`
@@ -49,6 +58,19 @@ func (p *Payment) Create(req *PaymentRequest) (*PaymentResponse, *Error, error) 
 	response := &PaymentResponse{}
 
 	err, errAPI := p.client.Request("POST", "/ecommerce/public/payments", req, nil, response)
+	if err != nil {
+		return nil, nil, err
+	}
+	if errAPI != nil {
+		return nil, errAPI, nil
+	}
+	return response, nil, nil
+}
+
+//Status - Get Status Payment
+func (p *Payment) Status(ReferenceID string) (*PaymentStatusResponse, *Error, error) {
+	response := &PaymentStatusResponse{}
+	err, errAPI := p.client.Request("GET", fmt.Sprintf("/ecommerce/public/payments/%s/status", ReferenceID), nil, nil, response)
 	if err != nil {
 		return nil, nil, err
 	}
