@@ -9,9 +9,20 @@
   revision = "23d116af351c84513e1946b527c88823e476be13"
   version = "v1.3.0"
 
+[[projects]]
+  digest = "1:2d327ae022fb2b38e9e087f137753cd213765353799c4d3bf3c68a3d1bda242c"
+  name = "github.com/rafaeltokyo/picpay-sdk-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "8b5a047c4cfce52c50f916609af607b0bb936597"
+  version = "0.0.2"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/joho/godotenv"]
+  input-imports = [
+    "github.com/joho/godotenv",
+    "github.com/rafaeltokyo/picpay-sdk-go",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
